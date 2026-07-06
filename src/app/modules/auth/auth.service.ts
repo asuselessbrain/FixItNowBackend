@@ -201,11 +201,38 @@ const changePassword = async (email: string, oldPassword: string, newPassword: s
     });
 }
 
+const currentAuthenticatedUser = async (email: string) => {
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email: email,
+            status: Status.active
+        },
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            phone: true,
+            role: true,
+            status: true,
+            avatar: true,
+            address: true,
+            createdAt: true,
+            updatedAt: true,
+        }
+    })
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found!")
+    }
+
+    return isUserExist;
+}
 
 export const authService = {
     loginUser,
     generateAccessTokenUsingRefreshToken,
     forgetPassword,
     resetPassword,
-    changePassword
+    changePassword,
+    currentAuthenticatedUser,
 }

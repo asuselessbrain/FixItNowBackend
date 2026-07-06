@@ -1,0 +1,12 @@
+model Categories {
+    id          String   @id @default(uuid())
+    name        String   @db.VarChar(50)
+    description String?
+    slug        String   @unique @db.VarChar(50)
+    image_url   String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@map("categories")
+    @@index([slug], name: "slug_index")
+}

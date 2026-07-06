@@ -59,10 +59,21 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const currentAuthenticatedUser = catchAsync(async (req: Request, res: Response) => {
+    const user = req.user;
+    const authenticatedUser = await authService.currentAuthenticatedUser(user?.email);
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Authenticated user retrieved successfully!",
+        data: authenticatedUser,
+    });
+});
+
 export const authController = {
     login,
     generateAccessTokenUsingRefreshToken,
     forgetPassword,
     resetPassword,
-    changePassword
+    changePassword,
+    currentAuthenticatedUser
 }
