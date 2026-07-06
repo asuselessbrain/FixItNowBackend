@@ -25,7 +25,13 @@ const createUser = async (payload: IUser) => {
         createSecretKey: config.jwt.token_secret as Secret,
         expiresIn: config.jwt.token_expires_in as StringValue,
     })
-    return { ...result, accessToken };
+
+    const refreshToken = jwtGenerator({
+        userInfo: { email: result.email, role: result.role },
+        createSecretKey: config.jwt.refresh_token_secret as Secret,
+        expiresIn: config.jwt.refresh_token_expires_in as StringValue,
+    })
+    return { ...result, accessToken, refreshToken };
 }
 
 export const userService = {

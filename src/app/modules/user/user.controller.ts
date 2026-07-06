@@ -6,7 +6,8 @@ import sendResponse from "../../../../lib/response"
 const createUser = catchAsync(async (req: Request, res: Response) => {
     const result = await userService.createUser(req.body)
 
-    res.cookie('token', result.accessToken, { secure: false, httpOnly: true })
+    res.cookie('accessToken', result.accessToken, { secure: false, httpOnly: true })
+    res.cookie('refreshToken', result.refreshToken, { secure: false, httpOnly: true })
 
     sendResponse(res, {
         statusCode: 201,
