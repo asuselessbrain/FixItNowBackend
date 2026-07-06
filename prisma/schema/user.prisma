@@ -1,0 +1,28 @@
+model User {
+    id       String @id @default(uuid())
+    email    String @unique
+    name     String @db.VarChar(50)
+    password String @db.VarChar(100)
+    phone    String @db.VarChar(20)
+    role     Role   @default(customer)
+    status   Status @default(active)
+    avatar  String?
+    address String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("users")
+    @@index([email], name: "email_index")
+}
+
+enum Role {
+    customer
+    technician
+    admin
+}
+
+enum Status {
+    active
+    banned
+}
