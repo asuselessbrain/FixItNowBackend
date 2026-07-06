@@ -6,6 +6,8 @@ import { jwtGenerator, jwtVerifier } from '../../../../lib/jwt';
 import { config } from '../../../../config';
 import { JwtPayload, Secret } from 'jsonwebtoken';
 import { StringValue } from 'ms';
+import { sendEmail } from "../../../../lib/emailSender";
+import { resetPasswordHtml } from "../../../../lib/emailTempletes/resetPasswordTemplete";
 
 const loginUser = async (payload: { email: string, password: string }) => {
     const isUserExist = await prisma.user.findUnique({
@@ -49,7 +51,7 @@ const loginUser = async (payload: { email: string, password: string }) => {
 }
 
 const generateAccessTokenUsingRefreshToken = async (refreshToken: string) => {
-    if(!refreshToken) {
+    if (!refreshToken) {
         throw new AppError(401, "Unauthorized")
     }
 
@@ -92,8 +94,80 @@ const generateAccessTokenUsingRefreshToken = async (refreshToken: string) => {
     };
 }
 
+const forgetPassword = async (email: string) => {
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email: email,
+            status: Status.active
+        }
+    })
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found!")
+    }
+
+    if (isUserExist.updatedAt && isUserExist.updatedAt.getTime() > Date.now() - 5 * 60 * 1000) {
+        throw new AppError(429, "You can only request a password reset once every 5 minutes.")
+    }
+
+    const token = jwtGenerator({
+        userInfo: { email: isUserExist.email, role: isUserExist.role },
+        createSecretKey: config.jwt.token_secret as Secret,
+        expiresIn: '5m',
+    })
+
+    let resetPasswordLink;
+
+    if (config.node_env === 'production') {
+        resetPasswordLink = `${config.client_prod_url}/reset-password?token=${token}`
+    } else {
+        resetPasswordLink = `${config.client_local_url}/reset-password?token=${token}`
+    }
+
+    await sendEmail(
+        isUserExist.email,
+        "Password Reset Request",
+        `You requested a password reset. Click the link to reset your password: ${resetPasswordLink}`,
+        resetPasswordHtml(resetPasswordLink),
+    );
+}
+
+const resetPassword = async (payload: { token: string; newPassword: string }) => {
+    const decoded = jwtVerifier({
+        token: payload.token,
+        secretKey: config.jwt.token_secret as Secret,
+    }) as JwtPayload;
+
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email: decoded.email,
+        },
+    });
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found");
+    }
+
+    const hashedPassword = await bcrypt.hash(
+        payload.newPassword,
+        Number(config.salt_rounds),
+    );
+
+
+    await prisma.user.update({
+        where: {
+            email: decoded.email,
+        },
+        data: {
+            password: hashedPassword,
+        },
+    });
+}
+
 
 export const authService = {
     loginUser,
-    generateAccessTokenUsingRefreshToken
+    generateAccessTokenUsingRefreshToken,
+    forgetPassword,
+    resetPassword
 }
