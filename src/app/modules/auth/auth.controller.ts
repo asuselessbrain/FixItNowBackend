@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { catchAsync } from "../../../../lib/catchAsync";
 import { authService } from "./auth.service";
 import sendResponse from "../../../../lib/response";
+import { AppError } from "../../../middlewares/appError";
 
 const login = catchAsync(async (req: Request, res: Response) => {
     const { email, password } = req.body;
@@ -22,6 +23,17 @@ const login = catchAsync(async (req: Request, res: Response) => {
     })
 });
 
+const generateAccessTokenUsingRefreshToken = catchAsync(async (req: Request, res: Response) => {
+    const refreshToken = req.cookies.refreshToken;
+    const result = await authService.generateAccessTokenUsingRefreshToken(refreshToken);
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Access token generated successfully!",
+        data: result,
+    })
+})
+
 export const authController = {
-    login
+    login,
+    generateAccessTokenUsingRefreshToken
 }
