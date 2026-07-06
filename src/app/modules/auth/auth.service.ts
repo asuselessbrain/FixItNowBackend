@@ -164,10 +164,48 @@ const resetPassword = async (payload: { token: string; newPassword: string }) =>
     });
 }
 
+const changePassword = async (email: string, oldPassword: string, newPassword: string) => {
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email: email,
+            status: Status.active
+        }
+    })
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found!")
+    }
+
+    const isPasswordMarched = await bcrypt.compare(oldPassword, isUserExist.password)
+
+    if (!isPasswordMarched) {
+        throw new AppError(401, "Invalid credentials!")
+    }
+
+    if(isUserExist.passwordChangeAt && isUserExist.passwordChangeAt.getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000) {
+        throw new AppError(429, "You can only change your password once every 7 days.")
+    }
+
+    const hashedPassword = await bcrypt.hash(
+        newPassword,
+        Number(config.salt_rounds),
+    );
+
+    await prisma.user.update({
+        where: {
+            email: email,
+        },
+        data: {
+            password: hashedPassword,
+        },
+    });
+}
+
 
 export const authService = {
     loginUser,
     generateAccessTokenUsingRefreshToken,
     forgetPassword,
-    resetPassword
+    resetPassword,
+    changePassword
 }

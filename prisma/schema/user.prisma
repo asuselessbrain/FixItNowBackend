@@ -9,6 +9,7 @@ model User {
     avatar  String?
     address String?
 
+    passwordChangeAt DateTime @default(now())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

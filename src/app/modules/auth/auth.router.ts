@@ -7,5 +7,6 @@ router.post("/login", authController.login)
 router.get('/refresh-token', authController.generateAccessTokenUsingRefreshToken);
 router.post('/forget-password', authController.forgetPassword);
 router.post('/reset-password', authController.resetPassword);
+router.post('/change-password', authController.changePassword);
 
 export const authRouter = router;

@@ -30,7 +30,7 @@ export const resetPasswordHtml = (url: string) => {
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 24px; background-color: #fff7ed; border: 1px solid #fdba74; border-radius: 18px;">
                   <tr>
                     <td style="padding: 18px 20px; text-align: center;">
-                      <p style="margin: 0; font-size: 14px; line-height: 22px; color: #9a3412; font-weight: 600;">This reset link stays active for 15 minutes.</p>
+                      <p style="margin: 0; font-size: 14px; line-height: 22px; color: #9a3412; font-weight: 600;">This reset link stays active for 5 minutes.</p>
                     </td>
                   </tr>
                 </table>

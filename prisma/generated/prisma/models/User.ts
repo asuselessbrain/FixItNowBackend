@@ -34,6 +34,7 @@ export type UserMinAggregateOutputType = {
   status: $Enums.Status | null
   avatar: string | null
   address: string | null
+  passwordChangeAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +49,7 @@ export type UserMaxAggregateOutputType = {
   status: $Enums.Status | null
   avatar: string | null
   address: string | null
+  passwordChangeAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +64,7 @@ export type UserCountAggregateOutputType = {
   status: number
   avatar: number
   address: number
+  passwordChangeAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -78,6 +81,7 @@ export type UserMinAggregateInputType = {
   status?: true
   avatar?: true
   address?: true
+  passwordChangeAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +96,7 @@ export type UserMaxAggregateInputType = {
   status?: true
   avatar?: true
   address?: true
+  passwordChangeAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +111,7 @@ export type UserCountAggregateInputType = {
   status?: true
   avatar?: true
   address?: true
+  passwordChangeAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +199,7 @@ export type UserGroupByOutputType = {
   status: $Enums.Status
   avatar: string | null
   address: string | null
+  passwordChangeAt: Date
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -228,6 +235,7 @@ export type UserWhereInput = {
   status?: Prisma.EnumStatusFilter<"User"> | $Enums.Status
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   address?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordChangeAt?: Prisma.DateTimeFilter<"User"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -242,6 +250,7 @@ export type UserOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordChangeAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -259,6 +268,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumStatusFilter<"User"> | $Enums.Status
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   address?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordChangeAt?: Prisma.DateTimeFilter<"User"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }, "id" | "email">
@@ -273,6 +283,7 @@ export type UserOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordChangeAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -293,6 +304,7 @@ export type UserScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumStatusWithAggregatesFilter<"User"> | $Enums.Status
   avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  passwordChangeAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -307,6 +319,7 @@ export type UserCreateInput = {
   status?: $Enums.Status
   avatar?: string | null
   address?: string | null
+  passwordChangeAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -321,6 +334,7 @@ export type UserUncheckedCreateInput = {
   status?: $Enums.Status
   avatar?: string | null
   address?: string | null
+  passwordChangeAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -335,6 +349,7 @@ export type UserUpdateInput = {
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordChangeAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -349,6 +364,7 @@ export type UserUncheckedUpdateInput = {
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordChangeAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -363,6 +379,7 @@ export type UserCreateManyInput = {
   status?: $Enums.Status
   avatar?: string | null
   address?: string | null
+  passwordChangeAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -377,6 +394,7 @@ export type UserUpdateManyMutationInput = {
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordChangeAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -391,6 +409,7 @@ export type UserUncheckedUpdateManyInput = {
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordChangeAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -405,6 +424,7 @@ export type UserCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  passwordChangeAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -419,6 +439,7 @@ export type UserMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  passwordChangeAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -433,6 +454,7 @@ export type UserMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  passwordChangeAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -469,6 +491,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   avatar?: boolean
   address?: boolean
+  passwordChangeAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -483,6 +506,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   avatar?: boolean
   address?: boolean
+  passwordChangeAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -497,6 +521,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   avatar?: boolean
   address?: boolean
+  passwordChangeAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -511,11 +536,12 @@ export type UserSelectScalar = {
   status?: boolean
   avatar?: boolean
   address?: boolean
+  passwordChangeAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "password" | "phone" | "role" | "status" | "avatar" | "address" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "password" | "phone" | "role" | "status" | "avatar" | "address" | "passwordChangeAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -530,6 +556,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     status: $Enums.Status
     avatar: string | null
     address: string | null
+    passwordChangeAt: Date
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -964,6 +991,7 @@ export interface UserFieldRefs {
   readonly status: Prisma.FieldRef<"User", 'Status'>
   readonly avatar: Prisma.FieldRef<"User", 'String'>
   readonly address: Prisma.FieldRef<"User", 'String'>
+  readonly passwordChangeAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
