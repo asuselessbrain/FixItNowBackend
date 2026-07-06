@@ -21,5 +21,9 @@ export const config = {
         port: process.env.EMAIL_PORT || 587,
         user: process.env.EMAIL_USER || "",
         pass: process.env.EMAIL_PASS || "",
+    },
+    seedAdminData: {
+        email: process.env.SEED_ADMIN_EMAIL || "admin@gmail.com",
+        password: process.env.SEED_ADMIN_PASSWORD || "123456"
     }
 }
