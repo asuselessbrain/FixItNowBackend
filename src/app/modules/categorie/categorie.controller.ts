@@ -43,9 +43,21 @@ const updateCategory = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const toggleActiveStatus = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await categoryService.toggleActiveStatus(id as string)
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Category status toggled successfully!",
+        data: result
+    })
+})
+
 export const categoryController = {
     createCategory,
     getAllCategories,
     getSingleCategory,
-    updateCategory
+    updateCategory,
+    toggleActiveStatus
 }

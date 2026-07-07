@@ -77,7 +77,7 @@ const updateCategory = async (id: string, payload: ICategory) => {
     if (!existingCategory) {
         throw new AppError(404, "Category not found");
     }
-    
+
     const result = await prisma.categories.update({
         where: {
             id
@@ -88,9 +88,32 @@ const updateCategory = async (id: string, payload: ICategory) => {
     return result;
 }
 
+const toggleActiveStatus = async (id: string) => {
+    const existingCategory = await prisma.categories.findUnique({
+        where: {
+            id
+        }
+    })
+
+    if (!existingCategory) {
+        throw new AppError(404, "Category not found");
+    }
+
+    const result = await prisma.categories.update({
+        where: {
+            id
+        },
+        data: {
+            isActive: !existingCategory.isActive
+        }
+    })
+    return result;
+}
+
 export const categoryService = {
     createCategory,
     getAllCategories,
     getSingleCategory,
-    updateCategory
+    updateCategory,
+    toggleActiveStatus
 }
