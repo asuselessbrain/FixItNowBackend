@@ -1,0 +1,19 @@
+model Service {
+    id           String             @id @default(uuid())
+    name         String             @db.VarChar(100)
+    description  String?            @db.Text
+    price        Float
+    image_url    String?
+    location     String             @db.VarChar(100)
+    rating       Float              @default(0.0)
+    categoryId   String
+    category     Categories         @relation(fields: [categoryId], references: [id])
+    technicianId String
+    technician   TechnicianProfiles @relation(fields: [technicianId], references: [id])
+    createdAt    DateTime           @default(now())
+    updatedAt    DateTime           @updatedAt
+
+    @@map("services")
+    @@index([categoryId], name: "category_id_index")
+    @@index([technicianId], name: "technician_id_index")
+}

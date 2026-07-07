@@ -10,4 +10,5 @@ model Categories {
 
     @@index([slug], name: "slug_index")
     @@map("categories")
+    services Service[]
 }
