@@ -23,7 +23,19 @@ const getSingleTechnicianProfile = catchAsync(async (req: Request, res: Response
     })
 })
 
+const updateTechnicianProfile = catchAsync(async (req: Request, res: Response) => {
+    const email = req.user?.email;
+    const result = await technicianProfilesService.updateTechnicianProfile(email as string, req.body)
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Technician profile updated successfully!",
+        data: result
+    })
+})
+
 export const technicianProfilesController = {
     getAllTechnicianProfiles,
-    getSingleTechnicianProfile
+    getSingleTechnicianProfile,
+    updateTechnicianProfile
 }

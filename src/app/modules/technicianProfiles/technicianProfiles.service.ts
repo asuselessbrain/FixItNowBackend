@@ -80,7 +80,46 @@ const getSingleTechnician = async (id: string) => {
     return result
 }
 
+const updateTechnicianProfile = async (email: string, payload: any) => {
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email,
+            status: "active",
+            role: "technician"
+        }
+    })
+
+    if (!isUserExist) {
+        throw new AppError(404, "Technician not found");
+    }
+
+    const { technicianProfiles, ...userData } = payload;
+
+    const result = await prisma.user.update({
+        where: {
+            email,
+            role: "technician"
+        },
+        data: {
+            ...userData,
+            ...(technicianProfiles && {
+                technicianProfiles: {
+                    update: {
+                        ...technicianProfiles
+                    }
+                }
+            })
+        },
+        include: {
+            technicianProfiles: true
+        }
+    })
+
+    return result
+}
+
 export const technicianProfilesService = {
     getAllTechnician,
-    getSingleTechnician
+    getSingleTechnician,
+    updateTechnicianProfile
 }

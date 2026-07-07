@@ -7,5 +7,6 @@ const router = Router();
 
 router.get("/", technicianProfilesController.getAllTechnicianProfiles)
 router.get("/:id", technicianProfilesController.getSingleTechnicianProfile)
+router.patch("/", auth(Role.technician), technicianProfilesController.updateTechnicianProfile)
 
 export const technicianRouter = router;
