@@ -35,7 +35,22 @@ const getAllCategories = async (query: any) => {
         skip,
         orderBy: sortCondition
     });
-    return result;
+
+    const total = await prisma.categories.count({
+        where: {
+            AND: whereCondition
+        }
+    })
+
+    const totalPages = Math.ceil(total / take);
+
+    const meta = {
+        total,
+        totalPages,
+        currentPage: query.page ? parseInt(query.page) : 1,
+        limit: take
+    }
+    return { meta, result };
 }
 
 const getSingleCategory = async (id: string) => {
@@ -51,8 +66,31 @@ const getSingleCategory = async (id: string) => {
     return result;
 }
 
+const updateCategory = async (id: string, payload: ICategory) => {
+
+    const existingCategory = await prisma.categories.findUnique({
+        where: {
+            id
+        }
+    })
+
+    if (!existingCategory) {
+        throw new AppError(404, "Category not found");
+    }
+    
+    const result = await prisma.categories.update({
+        where: {
+            id
+        },
+        data: payload
+    })
+
+    return result;
+}
+
 export const categoryService = {
     createCategory,
     getAllCategories,
-    getSingleCategory
+    getSingleCategory,
+    updateCategory
 }
