@@ -1,6 +1,7 @@
 import { prisma } from "../../../../lib/prisma";
 import { CategoriesWhereInput } from "../../../../prisma/generated/prisma/models";
 import { paginationHelper } from "../../../helpers/paginationHelper";
+import { sortingHelper } from "../../../helpers/sortingHelper";
 import { ICategory } from "./categorie.interface";
 
 const createCategory = async (payload: ICategory) => {
@@ -29,13 +30,8 @@ const getAllCategories = async (query: any) => {
 
     const {take, skip} = paginationHelper(query.page, query.limit);
 
-    const sortCondition: { [key: string]: "asc" | "desc" } = {};
+    const sortCondition = sortingHelper(allowedSortFields, query.sortBy, query.sortOrder);
 
-    if (query.sortBy && allowedSortFields.includes(query.sortBy)) {
-        const sortOrder = query.sortOrder === "asc" ? "asc" : "desc";
-
-        sortCondition[query.sortBy] = sortOrder;
-    }
     const result = await prisma.categories.findMany({
         where: {
             AND: whereCondition
