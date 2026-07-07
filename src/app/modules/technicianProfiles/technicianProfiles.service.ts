@@ -4,6 +4,7 @@ import { filterHelper } from "../../../helpers/filterHelper"
 import { paginationHelper } from "../../../helpers/paginationHelper"
 import { searchingHelper } from "../../../helpers/searchingHelper"
 import { sortingHelper } from "../../../helpers/sortingHelper"
+import { AppError } from "../../../middlewares/appError"
 
 const getAllTechnician = async (payload: any) => {
     const whereCondition: UserWhereInput[] = []
@@ -60,6 +61,26 @@ const getAllTechnician = async (payload: any) => {
     return { meta, result }
 }
 
+const getSingleTechnician = async (id: string) => {
+    const result = await prisma.user.findUnique({
+        where: {
+            id,
+            status: "active",
+            role: "technician"
+        },
+        include: {
+            technicianProfiles: true
+        }
+    })
+
+    if (!result) {
+        throw new AppError(404, "Technician not found");
+    }
+
+    return result
+}
+
 export const technicianProfilesService = {
-    getAllTechnician
+    getAllTechnician,
+    getSingleTechnician
 }
