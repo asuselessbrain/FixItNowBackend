@@ -1,5 +1,6 @@
 import { prisma } from "../../../../lib/prisma"
 import { UserWhereInput } from "../../../../prisma/generated/prisma/models"
+import { filterHelper } from "../../../helpers/filterHelper"
 import { paginationHelper } from "../../../helpers/paginationHelper"
 import { searchingHelper } from "../../../helpers/searchingHelper"
 import { sortingHelper } from "../../../helpers/sortingHelper"
@@ -7,19 +8,25 @@ import { sortingHelper } from "../../../helpers/sortingHelper"
 const getAllTechnician = async (payload: any) => {
     const whereCondition: UserWhereInput[] = []
 
+    let { page, limit, sortBy, sortOrder, searchTerm, ...filters } = payload
+
     const allowedSearchFields = ["name", "email", "phone", "address", "technicianProfiles.skills", "technicianProfiles.location", "technicianProfiles.bio"]
-    
+
     const allowedSortFields = ["name", "technicianProfiles.average_rating", "createdAt", "updatedAt"]
 
-    if(payload.sortBy && payload.sortBy === "average_rating") {
-        payload.sortBy = "technicianProfiles.average_rating"
+    const allowedFilterFields = ["status"]
+
+    if (sortBy && sortBy === "average_rating") {
+        sortBy = "technicianProfiles.average_rating"
     }
 
-    searchingHelper(whereCondition, allowedSearchFields, payload.searchTerm)
+    searchingHelper(whereCondition, allowedSearchFields, searchTerm)
 
-    const { take, skip } = paginationHelper(payload.page, payload.limit)
+    filterHelper(whereCondition, filters, allowedFilterFields)
 
-    const sortCondition = sortingHelper(allowedSortFields, payload.sortBy, payload.sortOrder)
+    const { take, skip } = paginationHelper(page, limit)
+
+    const sortCondition = sortingHelper(allowedSortFields, sortBy, sortOrder)
 
     const result = await prisma.user.findMany({
         where: {
