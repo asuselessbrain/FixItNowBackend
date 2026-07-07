@@ -1,6 +1,7 @@
 import { prisma } from "../../../../lib/prisma";
 import { CategoriesWhereInput } from "../../../../prisma/generated/prisma/models";
 import { paginationHelper } from "../../../helpers/paginationHelper";
+import { searchingHelper } from "../../../helpers/searchingHelper";
 import { sortingHelper } from "../../../helpers/sortingHelper";
 import { ICategory } from "./categorie.interface";
 
@@ -17,18 +18,11 @@ const getAllCategories = async (query: any) => {
     const whereCondition: CategoriesWhereInput[] = [];
 
     const allowedSortFields = ["name", "createdAt", "updatedAt"];
+    const allowedSearchFields = ["name", "description", "slug"];
 
-    if (query.searchTerm) {
-        whereCondition.push({
-            OR: [
-                { name: { contains: query.searchTerm, mode: "insensitive" } },
-                { description: { contains: query.searchTerm, mode: "insensitive" } },
-                { slug: { contains: query.searchTerm, mode: "insensitive" } }
-            ]
-        })
-    }
+    searchingHelper(whereCondition, allowedSearchFields, query.searchTerm)
 
-    const {take, skip} = paginationHelper(query.page, query.limit);
+    const { take, skip } = paginationHelper(query.page, query.limit);
 
     const sortCondition = sortingHelper(allowedSortFields, query.sortBy, query.sortOrder);
 
