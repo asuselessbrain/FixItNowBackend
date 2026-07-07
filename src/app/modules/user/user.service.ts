@@ -6,18 +6,34 @@ import { Secret } from "jsonwebtoken";
 import { StringValue } from "ms";
 import { jwtGenerator } from "../../../../lib/jwt";
 import { IUser } from "./user.interface";
+import { AppError } from "../../../middlewares/appError";
 
 const createUser = async (payload: IUser) => {
     const hashedPassword = await bcrypt.hash(payload.password, Number(config.salt_rounds))
 
-    const userData = {
-        ...payload,
-        password: hashedPassword,
-        role: Role.customer
+    if (payload.role && payload.role === Role.admin) {
+        throw new AppError(403, "You are not allowed to create an admin user");
     }
 
-    const result = await prisma.user.create({
-        data: userData,
+    const userData = {
+        ...payload,
+        password: hashedPassword
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+        const user = await tx.user.create({
+            data: userData
+        })
+
+        if (payload.role === Role.technician) {
+            await tx.technicianProfiles.create({
+                data: {
+                    userId: user.id,
+                }
+            })
+        }
+
+        return user;
     })
 
     const accessToken = jwtGenerator({

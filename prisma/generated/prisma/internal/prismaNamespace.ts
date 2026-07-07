@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Categories: 'Categories',
+  TechnicianProfiles: 'TechnicianProfiles',
   User: 'User'
 } as const
 
@@ -401,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "categories" | "user"
+    modelProps: "categories" | "technicianProfiles" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -476,6 +477,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CategoriesCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CategoriesCountAggregateOutputType> | number
+        }
+      }
+    }
+    TechnicianProfiles: {
+      payload: Prisma.$TechnicianProfilesPayload<ExtArgs>
+      fields: Prisma.TechnicianProfilesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TechnicianProfilesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TechnicianProfilesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>
+        }
+        findFirst: {
+          args: Prisma.TechnicianProfilesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TechnicianProfilesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>
+        }
+        findMany: {
+          args: Prisma.TechnicianProfilesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>[]
+        }
+        create: {
+          args: Prisma.TechnicianProfilesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>
+        }
+        createMany: {
+          args: Prisma.TechnicianProfilesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TechnicianProfilesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>[]
+        }
+        delete: {
+          args: Prisma.TechnicianProfilesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>
+        }
+        update: {
+          args: Prisma.TechnicianProfilesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>
+        }
+        deleteMany: {
+          args: Prisma.TechnicianProfilesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TechnicianProfilesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TechnicianProfilesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>[]
+        }
+        upsert: {
+          args: Prisma.TechnicianProfilesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianProfilesPayload>
+        }
+        aggregate: {
+          args: Prisma.TechnicianProfilesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTechnicianProfiles>
+        }
+        groupBy: {
+          args: Prisma.TechnicianProfilesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TechnicianProfilesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TechnicianProfilesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TechnicianProfilesCountAggregateOutputType> | number
         }
       }
     }
@@ -606,6 +681,20 @@ export const CategoriesScalarFieldEnum = {
 export type CategoriesScalarFieldEnum = (typeof CategoriesScalarFieldEnum)[keyof typeof CategoriesScalarFieldEnum]
 
 
+export const TechnicianProfilesScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  bio: 'bio',
+  experience_year: 'experience_year',
+  location: 'location',
+  skills: 'skills',
+  average_rating: 'average_rating',
+  isAvailable: 'isAvailable'
+} as const
+
+export type TechnicianProfilesScalarFieldEnum = (typeof TechnicianProfilesScalarFieldEnum)[keyof typeof TechnicianProfilesScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -690,6 +779,34 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'Role'
  */
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -714,20 +831,6 @@ export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Status[]'
  */
 export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 /**
@@ -841,6 +944,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   categories?: Prisma.CategoriesOmit
+  technicianProfiles?: Prisma.TechnicianProfilesOmit
   user?: Prisma.UserOmit
 }
 

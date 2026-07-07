@@ -1,0 +1,14 @@
+model TechnicianProfiles {
+    id              String  @id @default(uuid())
+    userId          String  @unique
+    user            User    @relation(fields: [userId], references: [id])
+    bio             String? @db.Text
+    experience_year Int?    @db.SmallInt
+    location        String? @db.VarChar(100)
+    skills          String? @db.VarChar(200)
+    average_rating  Float?  @default(0.0)
+    isAvailable     Boolean @default(true)
+
+    @@map("technician_profiles")
+    @@index([userId], name: "user_id_index")
+}
