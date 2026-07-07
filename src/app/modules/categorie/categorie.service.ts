@@ -3,6 +3,7 @@ import { CategoriesWhereInput } from "../../../../prisma/generated/prisma/models
 import { paginationHelper } from "../../../helpers/paginationHelper";
 import { searchingHelper } from "../../../helpers/searchingHelper";
 import { sortingHelper } from "../../../helpers/sortingHelper";
+import { AppError } from "../../../middlewares/appError";
 import { ICategory } from "./categorie.interface";
 
 const createCategory = async (payload: ICategory) => {
@@ -37,7 +38,21 @@ const getAllCategories = async (query: any) => {
     return result;
 }
 
+const getSingleCategory = async (id: string) => {
+    const result = await prisma.categories.findUnique({
+        where: {
+            id
+        }
+    })
+
+    if (!result) {
+        throw new AppError(404, "Category not found");
+    }
+    return result;
+}
+
 export const categoryService = {
     createCategory,
-    getAllCategories
+    getAllCategories,
+    getSingleCategory
 }
