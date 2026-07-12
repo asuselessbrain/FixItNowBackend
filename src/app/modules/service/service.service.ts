@@ -57,17 +57,47 @@ const getAllServices = async (payload: Record<string, any>) => {
 
     const whereConditions: ServiceWhereInput[] = [];
     const allowedSearchFields = ["name", "description", "location", "category.name", "technician.user.name"];
-    const allowedFilterFields = ["category.name"];
+    const allowedFilterFields = ["location", "category.name", "rating"];
     const allowedSortFields = ["name", "price", "location", "rating", "createdAt", "updatedAt", "technician.average_rating"];
 
-    if(filters.category){
+    if (filters.category) {
         filters['category.name'] = filters.category;
         delete filters.category;
     }
-    
+
+    if (filters.rating) {
+        filters['rating'] = parseFloat(filters.rating);
+    }
+
+    const ratingRange: Record<string, number> = {};
+
+    if (filters.ratingGt !== undefined && filters.ratingGt !== null && filters.ratingGt !== '') {
+        ratingRange.gt = parseFloat(filters.ratingGt);
+        delete filters.ratingGt;
+    }
+
+    if (filters.ratingGte !== undefined && filters.ratingGte !== null && filters.ratingGte !== '') {
+        ratingRange.gte = parseFloat(filters.ratingGte);
+        delete filters.ratingGte;
+    }
+
+    if (filters.ratingLt !== undefined && filters.ratingLt !== null && filters.ratingLt !== '') {
+        ratingRange.lt = parseFloat(filters.ratingLt);
+        delete filters.ratingLt;
+    }
+
+    if (filters.ratingLte !== undefined && filters.ratingLte !== null && filters.ratingLte !== '') {
+        ratingRange.lte = parseFloat(filters.ratingLte);
+        delete filters.ratingLte;
+    }
+
+    if (Object.keys(ratingRange).length > 0) {
+        whereConditions.push({ rating: ratingRange } as ServiceWhereInput);
+    }
+
 
     searchingHelper(whereConditions, allowedSearchFields, searchTerm);
-    
+
 
     filterHelper(whereConditions, filters, allowedFilterFields);
 
