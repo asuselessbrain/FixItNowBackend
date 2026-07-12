@@ -34,8 +34,18 @@ const updateTechnicianProfile = catchAsync(async (req: Request, res: Response) =
     })
 })
 
+const generateTimeSlots = catchAsync(async (req: Request, res: Response) => {
+    const result = await technicianProfilesService.generateTimeSlots()
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Time slots generated successfully!",
+        data: result
+    })
+})
+
 export const technicianProfilesController = {
     getAllTechnicianProfiles,
     getSingleTechnicianProfile,
-    updateTechnicianProfile
+    updateTechnicianProfile,
+    generateTimeSlots
 }

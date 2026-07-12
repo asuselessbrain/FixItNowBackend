@@ -118,8 +118,31 @@ const updateTechnicianProfile = async (email: string, payload: any) => {
     return result
 }
 
+const generateTimeSlots = async () => {
+    const startTime = 9;
+    const endTime = 20;
+    const generatedSlots = [];
+
+    const formatHour = (hour: number) => {
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+        return `${displayHour}:00 ${ampm}`;
+    };
+
+    for (let hour = startTime; hour < endTime; hour++) {
+        const startStr = formatHour(hour);
+        const endStr = formatHour(hour + 1);
+
+        const slotRange = `${startStr} to ${endStr}`;
+
+        generatedSlots.push(slotRange);
+    }
+
+    return generatedSlots;
+}
 export const technicianProfilesService = {
     getAllTechnician,
     getSingleTechnician,
-    updateTechnicianProfile
+    updateTechnicianProfile,
+    generateTimeSlots
 }
