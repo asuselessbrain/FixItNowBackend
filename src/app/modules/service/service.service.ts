@@ -1,4 +1,9 @@
 import { prisma } from "../../../../lib/prisma"
+import { ServiceWhereInput } from "../../../../prisma/generated/prisma/models"
+import { filterHelper } from "../../../helpers/filterHelper"
+import { paginationHelper } from "../../../helpers/paginationHelper"
+import { searchingHelper } from "../../../helpers/searchingHelper"
+import { sortingHelper } from "../../../helpers/sortingHelper"
 import { AppError } from "../../../middlewares/appError"
 import { IService } from "./service.interface"
 
@@ -43,10 +48,76 @@ const createService = async (technicianEmail: string, payload: Omit<IService, 'i
             technicianId: isTechnicianExist.id
         }
     })
-    
+
     return result
 }
 
+const getAllServices = async (payload: Record<string, any>) => {
+    const { page, limit, searchTerm, sortBy, sortOrder, ...filters } = payload;
+
+    const whereConditions: ServiceWhereInput[] = [];
+    const allowedSearchFields = ["name", "description", "location", "category.name", "technician.user.name"];
+    const allowedFilterFields = ["category.name"];
+    const allowedSortFields = ["name", "price", "location", "rating", "createdAt", "updatedAt", "technician.average_rating"];
+
+    if(filters.category){
+        filters['category.name'] = filters.category;
+        delete filters.category;
+    }
+    
+
+    searchingHelper(whereConditions, allowedSearchFields, searchTerm);
+    
+
+    filterHelper(whereConditions, filters, allowedFilterFields);
+
+    const { take, skip } = paginationHelper(page, limit);
+
+    const sortCondition = sortingHelper(allowedSortFields, sortBy, sortOrder);
+
+    const result = await prisma.service.findMany({
+        where: {
+            AND: whereConditions
+        },
+        include: {
+            category: true,
+            technician: {
+                include: {
+                    user: {
+                        omit: {
+                            password: true,
+                            createdAt: true,
+                            updatedAt: true,
+                            passwordChangeAt: true,
+                        }
+                    }
+                }
+            }
+        },
+        take,
+        skip,
+        orderBy: sortCondition
+    });
+
+    const total = await prisma.service.count({
+        where: {
+            AND: whereConditions
+        }
+    });
+
+    const totalPages = Math.ceil(total / take);
+
+    const meta = {
+        total,
+        totalPages,
+        currentPage: payload.page ? parseInt(payload.page) : 1,
+        limit: take
+    };
+
+    return { meta, result };
+}
+
 export const serviceService = {
-    createService
+    createService,
+    getAllServices
 }
