@@ -12,4 +12,6 @@ model TechnicianProfiles {
     @@map("technician_profiles")
     @@index([userId], name: "user_id_index")
     services Service[]
+    technicianSlots TechnicianSlots[]
+    bookings Bookings[]
 }

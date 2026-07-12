@@ -204,7 +204,7 @@ const updateService = async (email: string, id: string, payload: Partial<IServic
         throw new AppError(404, "Service not found");
     }
 
-    if(existingService.technicianId !== isTechnicianExist.id) {
+    if (existingService.technicianId !== isTechnicianExist.id) {
         throw new AppError(403, "You are not authorized to update this service");
     }
 
@@ -218,9 +218,128 @@ const updateService = async (email: string, id: string, payload: Partial<IServic
     return result;
 }
 
+const getMyAddedServices = async (email: string, query: Record<string, any>) => {
+
+    const { page, limit, searchTerm, sortBy, sortOrder, ...filters } = query;
+
+    const whereConditions: ServiceWhereInput[] = [];
+    const allowedSearchFields = ["name", "description", "location", "category.name", "technician.user.name"];
+    const allowedFilterFields = ["location", "category.name", "rating"];
+    const allowedSortFields = ["name", "price", "location", "rating", "createdAt", "updatedAt", "technician.average_rating"];
+
+    if (filters.category) {
+        filters['category.name'] = filters.category;
+        delete filters.category;
+    }
+
+    if (filters.rating) {
+        filters['rating'] = parseFloat(filters.rating);
+    }
+
+    const ratingRange: Record<string, number> = {};
+
+    if (filters.ratingGt !== undefined && filters.ratingGt !== null && filters.ratingGt !== '') {
+        ratingRange.gt = parseFloat(filters.ratingGt);
+        delete filters.ratingGt;
+    }
+
+    if (filters.ratingGte !== undefined && filters.ratingGte !== null && filters.ratingGte !== '') {
+        ratingRange.gte = parseFloat(filters.ratingGte);
+        delete filters.ratingGte;
+    }
+
+    if (filters.ratingLt !== undefined && filters.ratingLt !== null && filters.ratingLt !== '') {
+        ratingRange.lt = parseFloat(filters.ratingLt);
+        delete filters.ratingLt;
+    }
+
+    if (filters.ratingLte !== undefined && filters.ratingLte !== null && filters.ratingLte !== '') {
+        ratingRange.lte = parseFloat(filters.ratingLte);
+        delete filters.ratingLte;
+    }
+
+    if (Object.keys(ratingRange).length > 0) {
+        whereConditions.push({ rating: ratingRange } as ServiceWhereInput);
+    }
+
+
+    searchingHelper(whereConditions, allowedSearchFields, searchTerm);
+
+
+    filterHelper(whereConditions, filters, allowedFilterFields);
+
+    const { take, skip } = paginationHelper(page, limit);
+
+    const sortCondition = sortingHelper(allowedSortFields, sortBy, sortOrder);
+
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found");
+    }
+
+    const isTechnicianExist = await prisma.technicianProfiles.findUnique({
+        where: {
+            userId: isUserExist.id
+        }
+    });
+
+    if (!isTechnicianExist) {
+        throw new AppError(404, "Technician not found");
+    }
+
+    const result = await prisma.service.findMany({
+        where: {
+            technicianId: isTechnicianExist.id,
+            AND: whereConditions
+        },
+        skip,
+        take,
+        orderBy: sortCondition,
+        include: {
+            category: true,
+            technician: {
+                include: {
+                    user: {
+                        omit: {
+                            password: true,
+                            createdAt: true,
+                            updatedAt: true,
+                            passwordChangeAt: true,
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const total = await prisma.service.count({
+        where: {
+            technicianId: isTechnicianExist.id,
+            AND: whereConditions
+        }
+    });
+
+    const totalPages = Math.ceil(total / take);
+
+    const meta = {
+        total,
+        totalPages,
+        currentPage: query.page ? parseInt(query.page) : 1,
+        limit: take
+    };
+
+    return {meta, result};
+}
+
 export const serviceService = {
     createService,
     getAllServices,
     getSingleService,
-    updateService
+    updateService,
+    getMyAddedServices
 }

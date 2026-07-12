@@ -51,10 +51,23 @@ const updateService = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const getMyAddedServices = catchAsync(async (req: Request, res: Response) => {
+    const technicianEmail = req.user?.email;
+
+    const result = await serviceService.getMyAddedServices(technicianEmail as string, req.query)
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "My added services retrieved successfully!",
+        data: result
+    })
+})
+
 
 export const serviceController = {
     createService,
     getAllServices,
     getSingleService,
-    updateService
+    updateService,
+    getMyAddedServices
 }

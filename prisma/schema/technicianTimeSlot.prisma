@@ -1,0 +1,24 @@
+enum SlotStatus {
+    AVAILABLE
+    HOLD
+    BOOKED
+}
+
+model TechnicianSlots {
+    id           String             @id @default(uuid())
+    technicianId String
+    technician   TechnicianProfiles @relation(fields: [technicianId], references: [id])
+
+    date     String
+    slotTime String
+
+    status SlotStatus @default(AVAILABLE)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([technicianId, date, slotTime])
+    @@index([technicianId, status])
+    @@map("technician_slots")
+    bookings Bookings?
+}

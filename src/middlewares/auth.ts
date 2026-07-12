@@ -15,6 +15,7 @@ const auth = (...roles: string[]) => {
         throw new AppError(401, "Invalid signature");
       }
 
+
       const bearerToken = token.split(" ")[1];
       let decoded;
 

@@ -16,4 +16,5 @@ model Service {
     @@map("services")
     @@index([categoryId], name: "category_id_index")
     @@index([technicianId], name: "technician_id_index")
+    bookings Bookings[]
 }
