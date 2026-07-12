@@ -147,7 +147,80 @@ const getAllServices = async (payload: Record<string, any>) => {
     return { meta, result };
 }
 
+const getSingleService = async (id: string) => {
+    const result = await prisma.service.findUnique({
+        where: {
+            id
+        },
+        include: {
+            category: true,
+            technician: {
+                include: {
+                    user: {
+                        omit: {
+                            password: true,
+                            createdAt: true,
+                            updatedAt: true,
+                            passwordChangeAt: true,
+                        }
+                    }
+                }
+            }
+        }
+    });
+    return result;
+}
+
+const updateService = async (email: string, id: string, payload: Partial<IService>) => {
+
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found");
+    }
+
+    const isTechnicianExist = await prisma.technicianProfiles.findUnique({
+        where: {
+            userId: isUserExist.id
+        }
+    });
+
+    if (!isTechnicianExist) {
+        throw new AppError(404, "Technician not found");
+    }
+
+
+    const existingService = await prisma.service.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if (!existingService) {
+        throw new AppError(404, "Service not found");
+    }
+
+    if(existingService.technicianId !== isTechnicianExist.id) {
+        throw new AppError(403, "You are not authorized to update this service");
+    }
+
+    const result = await prisma.service.update({
+        where: {
+            id
+        },
+        data: payload
+    });
+
+    return result;
+}
+
 export const serviceService = {
     createService,
-    getAllServices
+    getAllServices,
+    getSingleService,
+    updateService
 }

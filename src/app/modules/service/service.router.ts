@@ -7,5 +7,7 @@ const router = Router()
 
 router.post("/", auth(Role.technician), serviceController.createService)
 router.get("/", serviceController.getAllServices)
+router.get("/:id", serviceController.getSingleService)
+router.patch("/:id", auth(Role.technician), serviceController.updateService)
 
 export const serviceRouter = router;

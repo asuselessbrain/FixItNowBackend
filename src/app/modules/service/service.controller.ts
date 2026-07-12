@@ -26,8 +26,35 @@ const getAllServices = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const getSingleService = catchAsync(async (req: Request, res: Response) => {
+    const serviceId = req.params.id;
+    const result = await serviceService.getSingleService(serviceId as string)
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Service retrieved successfully!",
+        data: result
+    })
+})
+
+const updateService = catchAsync(async (req: Request, res: Response) => {
+    const technicianEmail = req.user?.email;
+    const serviceId = req.params.id;
+    const payload = req.body;
+
+    const result = await serviceService.updateService(technicianEmail, serviceId as string, payload)
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Service updated successfully!",
+        data: result
+    })
+})
+
 
 export const serviceController = {
     createService,
-    getAllServices
+    getAllServices,
+    getSingleService,
+    updateService
 }
