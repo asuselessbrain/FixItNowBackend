@@ -51,9 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Bookings: 'Bookings',
   Categories: 'Categories',
   Service: 'Service',
   TechnicianProfiles: 'TechnicianProfiles',
+  TechnicianSlots: 'TechnicianSlots',
   User: 'User'
 } as const
 
@@ -71,6 +73,21 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const BookingsScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  serviceId: 'serviceId',
+  technicianId: 'technicianId',
+  slotId: 'slotId',
+  totalAmount: 'totalAmount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingsScalarFieldEnum = (typeof BookingsScalarFieldEnum)[keyof typeof BookingsScalarFieldEnum]
 
 
 export const CategoriesScalarFieldEnum = {
@@ -116,6 +133,19 @@ export const TechnicianProfilesScalarFieldEnum = {
 } as const
 
 export type TechnicianProfilesScalarFieldEnum = (typeof TechnicianProfilesScalarFieldEnum)[keyof typeof TechnicianProfilesScalarFieldEnum]
+
+
+export const TechnicianSlotsScalarFieldEnum = {
+  id: 'id',
+  technicianId: 'technicianId',
+  date: 'date',
+  slotTime: 'slotTime',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TechnicianSlotsScalarFieldEnum = (typeof TechnicianSlotsScalarFieldEnum)[keyof typeof TechnicianSlotsScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

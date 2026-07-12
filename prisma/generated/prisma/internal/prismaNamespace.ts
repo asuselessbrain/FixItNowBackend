@@ -384,9 +384,11 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Bookings: 'Bookings',
   Categories: 'Categories',
   Service: 'Service',
   TechnicianProfiles: 'TechnicianProfiles',
+  TechnicianSlots: 'TechnicianSlots',
   User: 'User'
 } as const
 
@@ -403,10 +405,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "categories" | "service" | "technicianProfiles" | "user"
+    modelProps: "bookings" | "categories" | "service" | "technicianProfiles" | "technicianSlots" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Bookings: {
+      payload: Prisma.$BookingsPayload<ExtArgs>
+      fields: Prisma.BookingsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BookingsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BookingsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>
+        }
+        findFirst: {
+          args: Prisma.BookingsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BookingsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>
+        }
+        findMany: {
+          args: Prisma.BookingsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>[]
+        }
+        create: {
+          args: Prisma.BookingsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>
+        }
+        createMany: {
+          args: Prisma.BookingsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BookingsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>[]
+        }
+        delete: {
+          args: Prisma.BookingsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>
+        }
+        update: {
+          args: Prisma.BookingsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>
+        }
+        deleteMany: {
+          args: Prisma.BookingsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BookingsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BookingsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>[]
+        }
+        upsert: {
+          args: Prisma.BookingsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingsPayload>
+        }
+        aggregate: {
+          args: Prisma.BookingsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBookings>
+        }
+        groupBy: {
+          args: Prisma.BookingsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BookingsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingsCountAggregateOutputType> | number
+        }
+      }
+    }
     Categories: {
       payload: Prisma.$CategoriesPayload<ExtArgs>
       fields: Prisma.CategoriesFieldRefs
@@ -629,6 +705,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TechnicianSlots: {
+      payload: Prisma.$TechnicianSlotsPayload<ExtArgs>
+      fields: Prisma.TechnicianSlotsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TechnicianSlotsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TechnicianSlotsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>
+        }
+        findFirst: {
+          args: Prisma.TechnicianSlotsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TechnicianSlotsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>
+        }
+        findMany: {
+          args: Prisma.TechnicianSlotsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>[]
+        }
+        create: {
+          args: Prisma.TechnicianSlotsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>
+        }
+        createMany: {
+          args: Prisma.TechnicianSlotsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TechnicianSlotsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>[]
+        }
+        delete: {
+          args: Prisma.TechnicianSlotsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>
+        }
+        update: {
+          args: Prisma.TechnicianSlotsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>
+        }
+        deleteMany: {
+          args: Prisma.TechnicianSlotsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TechnicianSlotsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TechnicianSlotsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>[]
+        }
+        upsert: {
+          args: Prisma.TechnicianSlotsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TechnicianSlotsPayload>
+        }
+        aggregate: {
+          args: Prisma.TechnicianSlotsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTechnicianSlots>
+        }
+        groupBy: {
+          args: Prisma.TechnicianSlotsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TechnicianSlotsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TechnicianSlotsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TechnicianSlotsCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -742,6 +892,21 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const BookingsScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  serviceId: 'serviceId',
+  technicianId: 'technicianId',
+  slotId: 'slotId',
+  totalAmount: 'totalAmount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingsScalarFieldEnum = (typeof BookingsScalarFieldEnum)[keyof typeof BookingsScalarFieldEnum]
+
+
 export const CategoriesScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -785,6 +950,19 @@ export const TechnicianProfilesScalarFieldEnum = {
 } as const
 
 export type TechnicianProfilesScalarFieldEnum = (typeof TechnicianProfilesScalarFieldEnum)[keyof typeof TechnicianProfilesScalarFieldEnum]
+
+
+export const TechnicianSlotsScalarFieldEnum = {
+  id: 'id',
+  technicianId: 'technicianId',
+  date: 'date',
+  slotTime: 'slotTime',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TechnicianSlotsScalarFieldEnum = (typeof TechnicianSlotsScalarFieldEnum)[keyof typeof TechnicianSlotsScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -850,9 +1028,30 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Boolean'
+ * Reference to a field of type 'Float'
  */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BookingStatus'
+ */
+export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BookingStatus[]'
+ */
+export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus[]'>
     
 
 
@@ -871,16 +1070,9 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Float'
+ * Reference to a field of type 'Boolean'
  */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -895,6 +1087,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SlotStatus'
+ */
+export type EnumSlotStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SlotStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SlotStatus[]'
+ */
+export type ListEnumSlotStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SlotStatus[]'>
     
 
 
@@ -1035,9 +1241,11 @@ export type PrismaClientOptions = ({
   queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
+  bookings?: Prisma.BookingsOmit
   categories?: Prisma.CategoriesOmit
   service?: Prisma.ServiceOmit
   technicianProfiles?: Prisma.TechnicianProfilesOmit
+  technicianSlots?: Prisma.TechnicianSlotsOmit
   user?: Prisma.UserOmit
 }
 

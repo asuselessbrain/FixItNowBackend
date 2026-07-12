@@ -8,8 +8,10 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Bookings'
 export type * from './models/Categories'
 export type * from './models/Service'
 export type * from './models/TechnicianProfiles'
+export type * from './models/TechnicianSlots'
 export type * from './models/User'
 export type * from './commonInputTypes'

@@ -4,6 +4,7 @@ import { authRouter } from "../app/modules/auth/auth.router";
 import { categoryRouter } from "../app/modules/categorie/categorie.router";
 import { technicianRouter } from "../app/modules/technicianProfiles/technicianProfiles.router";
 import { serviceRouter } from "../app/modules/service/service.router";
+import { technicianTimeSlotRouter } from "../app/modules/technicianTimeSlot/technicianTimeSlot.router";
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const routers = [
     {
         path: "/services",
         route: serviceRouter
+    },
+    {
+        path: "/technician-time-slot",
+        route: technicianTimeSlotRouter
     }
 ]
 
