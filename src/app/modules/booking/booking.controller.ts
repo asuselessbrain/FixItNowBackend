@@ -25,7 +25,19 @@ const confirmBooking = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const acceptBooking = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const result = await bookingService.acceptBooking(bookingId as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking accepted successfully!",
+        data: result
+    })
+})
+
 export const bookingController = {
     createBooking,
-    confirmBooking
+    confirmBooking,
+    acceptBooking
 }

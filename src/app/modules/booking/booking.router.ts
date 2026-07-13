@@ -7,5 +7,6 @@ const router = Router();
 
 router.post("/", auth(Role.customer), bookingController.createBooking)
 router.patch("/:bookingId/confirm", auth(Role.technician), bookingController.confirmBooking)
+router.patch("/:bookingId/accept", auth(Role.technician), bookingController.acceptBooking)
 
 export const bookingRouter = router;

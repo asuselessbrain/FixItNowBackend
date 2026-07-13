@@ -1,3 +1,5 @@
+import { BookingStatus } from "../../../../prisma/generated/prisma/enums";
+
 export interface IBooking {
     id?: string;
     customerId?: string;
@@ -5,7 +7,7 @@ export interface IBooking {
     technicianId?: string;
     slotId: string;
     totalAmount: number;
-    status?: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
+    status?: BookingStatus;
     createdAt?: Date;
     updatedAt?: Date;
 }

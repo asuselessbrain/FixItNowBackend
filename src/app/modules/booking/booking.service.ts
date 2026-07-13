@@ -73,6 +73,36 @@ const createBooking = async (email: string, payload: Omit<IBooking, 'id' | 'cust
     return result
 }
 
+const acceptBooking = async (bookingId: string) => {
+    const booking = await prisma.bookings.findUnique({
+        where: {
+            id: bookingId
+        }
+    })
+
+    if (!booking) {
+        throw new AppError(404, "Booking not found");
+    }
+
+    if (booking.status === "CONFIRMED") {
+        throw new AppError(400, "Booking is already confirmed");
+    }
+
+    if (booking.status === "CANCELLED") {
+        throw new AppError(400, "Booking is cancelled");
+    }
+
+    const result = await prisma.bookings.update({
+        where: {
+            id: bookingId
+        },
+        data: {
+            status: "CONFIRMED"
+        }
+    })
+    return result;
+}
+
 const confirmBooking = async (bookingId: string) => {
     const booking = await prisma.bookings.findUnique({
         where: {
@@ -105,5 +135,6 @@ const confirmBooking = async (bookingId: string) => {
 
 export const bookingService = {
     createBooking,
-    confirmBooking
+    confirmBooking,
+    acceptBooking
 }
