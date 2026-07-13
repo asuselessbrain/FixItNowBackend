@@ -14,17 +14,6 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
-const confirmBooking = catchAsync(async (req: Request, res: Response) => {
-    const bookingId = req.params.bookingId;
-    const result = await bookingService.confirmBooking(bookingId as string);
-
-    sendResponse(res, {
-        statusCode: 200,
-        message: "Booking confirmed successfully!",
-        data: result
-    })
-})
-
 const acceptBooking = catchAsync(async (req: Request, res: Response) => {
     const bookingId = req.params.bookingId;
     const result = await bookingService.acceptBooking(bookingId as string);
@@ -36,8 +25,31 @@ const acceptBooking = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const confirmBooking = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const result = await bookingService.confirmBooking(bookingId as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking confirmed successfully!",
+        data: result
+    })
+})
+
+const rejectBooking = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const result = await bookingService.rejectBooking(bookingId as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking rejected successfully!",
+        data: result
+    })
+})
+
 export const bookingController = {
     createBooking,
     confirmBooking,
-    acceptBooking
+    acceptBooking,
+    rejectBooking
 }
