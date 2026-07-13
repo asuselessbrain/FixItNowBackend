@@ -14,6 +14,18 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const confirmBooking = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const result = await bookingService.confirmBooking(bookingId as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking confirmed successfully!",
+        data: result
+    })
+})
+
 export const bookingController = {
-    createBooking
+    createBooking,
+    confirmBooking
 }

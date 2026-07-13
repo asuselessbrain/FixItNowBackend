@@ -6,5 +6,6 @@ import { Role } from "../../../../prisma/generated/prisma/enums";
 const router = Router();
 
 router.post("/", auth(Role.customer), bookingController.createBooking)
+router.patch("/:bookingId/confirm", auth(Role.technician), bookingController.confirmBooking)
 
 export const bookingRouter = router;
