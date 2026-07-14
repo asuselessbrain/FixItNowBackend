@@ -52,6 +52,11 @@ export type Bookings = Prisma.BookingsModel
  */
 export type Categories = Prisma.CategoriesModel
 /**
+ * Model Payments
+ * 
+ */
+export type Payments = Prisma.PaymentsModel
+/**
  * Model Service
  * 
  */

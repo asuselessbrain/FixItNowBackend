@@ -3,7 +3,7 @@ import { SlotStatus } from "../../../../prisma/generated/prisma/enums";
 import { AppError } from "../../../middlewares/appError";
 import { IBooking } from "./booking.interface";
 
-const createBooking = async (email: string, payload: Omit<IBooking, 'id' | 'customerId' | 'createdAt' | 'updatedAt' | 'technicianId'>) => {
+const createBooking = async (email: string, payload: Omit<IBooking, 'id' | 'customerId' | 'createdAt' | 'updatedAt' | 'technicianId' | 'totalAmount'>) => {
 
     const isUserExist = await prisma.user.findUnique({
         where: {
@@ -49,12 +49,14 @@ const createBooking = async (email: string, payload: Omit<IBooking, 'id' | 'cust
     }
 
     const technicianId = isServiceExist.technician.id;
+    const totalAmount = isServiceExist.price;
 
     const result = await prisma.$transaction(async (tx) => {
         const booking = await tx.bookings.create({
             data: {
                 customerId: isUserExist.id,
                 technicianId: technicianId,
+                totalAmount,
                 ...payload
             }
         })
@@ -118,50 +120,31 @@ const rejectBooking = async (bookingId: string) => {
         throw new AppError(400, "Booking is already cancelled");
     }
 
-    const result = await prisma.bookings.update({
+    const result = await prisma.$transaction(async (tx) => {
+        const booking = await tx.bookings.update({
+            where: {
+                id: bookingId
+            },
+            data: {
+                status: "CANCELLED"
+            }
+        })
+    })
+
+    await prisma.technicianSlots.update({
         where: {
-            id: bookingId
+            id: booking.slotId
         },
         data: {
-            status: "CANCELLED"
+            status: SlotStatus.AVAILABLE
         }
     })
     return result;
 }
 
-const confirmBooking = async (bookingId: string) => {
-    const booking = await prisma.bookings.findUnique({
-        where: {
-            id: bookingId
-        }
-    })
-
-    if (!booking) {
-        throw new AppError(404, "Booking not found");
-    }
-
-    if (booking.status === "CONFIRMED") {
-        throw new AppError(400, "Booking is already confirmed");
-    }
-
-    if (booking.status === "CANCELLED") {
-        throw new AppError(400, "Booking is cancelled");
-    }
-
-    const result = await prisma.bookings.update({
-        where: {
-            id: bookingId
-        },
-        data: {
-            status: "CONFIRMED"
-        }
-    })
-    return result;
-}
 
 export const bookingService = {
     createBooking,
-    confirmBooking,
     acceptBooking,
     rejectBooking
 }

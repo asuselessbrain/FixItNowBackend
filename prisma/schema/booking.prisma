@@ -30,4 +30,5 @@ model Bookings {
   @@index([customerId])
   @@index([technicianId])
   @@map("bookings")
+  payments Payments[]
 }

@@ -25,5 +25,8 @@ export const config = {
     seedAdminData: {
         email: process.env.SEED_ADMIN_EMAIL || "admin@gmail.com",
         password: process.env.SEED_ADMIN_PASSWORD || "123456"
+    },
+    payment: {
+        stripe_secret_key: process.env.STRIPE_SECRET_KEY
     }
 }
