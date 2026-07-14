@@ -181,10 +181,17 @@ const completeBooking = async (email: string, bookingId: string) => {
         throw new AppError(400, "Booking is cancelled");
     }
 
+    if (booking.status === "COMPLETED") {
+        throw new AppError(400, "Booking is already completed");
+    }
+
+    if (booking.status !== "PAID") {
+        throw new AppError(400, "Booking is not paid yet");
+    }
+
     const result = await prisma.bookings.update({
         where: {
-            id: bookingId,
-            status: BookingStatus.PAID
+            id: bookingId
         },
         data: {
             status: "COMPLETED"
@@ -193,9 +200,133 @@ const completeBooking = async (email: string, bookingId: string) => {
     return result;
 }
 
+const cancelBookingByTechnician = async (email: string, bookingId: string) => {
+    const booking = await prisma.bookings.findUnique({
+        where: {
+            id: bookingId
+        }
+    })
+
+    if (!booking) {
+        throw new AppError(404, "Booking not found");
+    }
+
+    if (booking.status === "CANCELLED") {
+        throw new AppError(400, "Booking is already cancelled");
+    }
+
+    if (booking.status === "COMPLETED") {
+        throw new AppError(400, "Booking is already completed");
+    }
+
+    if (booking.status === "PAID") {
+        throw new AppError(400, "Booking is already paid");
+    }
+
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    })
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found");
+    }
+
+    const isTechnician = await prisma.technicianProfiles.findUnique({
+        where: {
+            userId: isUserExist.id
+        }
+    })
+
+    if (!isTechnician) {
+        throw new AppError(404, "Technician not found");
+    }
+
+    if (booking.technicianId !== isTechnician.id) {
+        throw new AppError(403, "You are not authorized to cancel this booking");
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+        const booking = await tx.bookings.update({
+            where: {
+                id: bookingId
+            },
+            data: {
+                status: "CANCELLED"
+            }
+        })
+
+        await tx.technicianSlots.update({
+            where: {
+                id: booking.slotId
+            },
+            data: {
+                status: SlotStatus.AVAILABLE
+            }
+        })
+        return booking;
+    }
+    )
+    return result;
+}
+
+const cancelBookingByCustomer = async (email: string, bookingId: string) => {
+    const booking = await prisma.bookings.findUnique({
+        where: {
+            id: bookingId
+        }
+    })
+
+    if (!booking) {
+        throw new AppError(404, "Booking not found");
+    }
+
+    if (booking.status === "CANCELLED") {
+        throw new AppError(400, "Booking is already cancelled");
+    }
+
+    if (booking.status === "COMPLETED") {
+        throw new AppError(400, "Booking is already completed");
+    }
+
+    if (booking.status === "PAID") {
+        throw new AppError(400, "Booking is already paid");
+    }
+
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    })
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found");
+    }
+
+    if (booking.customerId !== isUserExist.id) {
+        throw new AppError(403, "You are not authorized to cancel this booking");
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+        const booking = await tx.bookings.update({
+            where: {
+                id: bookingId
+            },
+            data: {
+                status: "CANCELLED"
+            }
+        })
+        return booking;
+    })
+    return result;
+}
+
 export const bookingService = {
     createBooking,
     acceptBooking,
     rejectBooking,
-    completeBooking
+    completeBooking,
+    cancelBookingByTechnician,
+    cancelBookingByCustomer
 }

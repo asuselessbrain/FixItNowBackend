@@ -49,9 +49,35 @@ const completeBooking = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const cancelBookingByTechnician = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const userEmail = req.user?.email;
+    const result = await bookingService.cancelBookingByTechnician(userEmail as string, bookingId as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking cancelled successfully!",
+        data: result
+    })
+})
+
+const cancelBookingByCustomer = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const userEmail = req.user?.email;
+    const result = await bookingService.cancelBookingByCustomer(userEmail as string, bookingId as string);  
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking cancelled successfully!",
+        data: result
+    })
+})
+
 export const bookingController = {
     createBooking,
     acceptBooking,
     rejectBooking,
-    completeBooking
+    completeBooking,
+    cancelBookingByTechnician,
+    cancelBookingByCustomer
 }
