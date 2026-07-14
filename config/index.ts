@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 
-dotenv.config({path: path.join(process.cwd(), ".env")});
+dotenv.config({ path: path.join(process.cwd(), ".env") });
 
 export const config = {
     node_env: process.env.NODE_ENV || "development",
@@ -27,6 +27,7 @@ export const config = {
         password: process.env.SEED_ADMIN_PASSWORD || "123456"
     },
     payment: {
-        stripe_secret_key: process.env.STRIPE_SECRET_KEY
+        stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+        stripe_webhook_secret: process.env.STRIPE_WEBHOOK_SECRET
     }
 }

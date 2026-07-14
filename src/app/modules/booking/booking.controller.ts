@@ -37,8 +37,21 @@ const rejectBooking = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const completeBooking = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const userEmail = req.user?.email;
+    const result = await bookingService.completeBooking(userEmail as string, bookingId as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking completed successfully!",
+        data: result
+    })
+})
+
 export const bookingController = {
     createBooking,
     acceptBooking,
-    rejectBooking
+    rejectBooking,
+    completeBooking
 }

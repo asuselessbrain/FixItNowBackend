@@ -7,6 +7,8 @@ import router from "./routes/router";
 
 const app:Application = express();
 
+app.use("/api/v1/payment/webhook", express.raw({type: 'application/json'}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

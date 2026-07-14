@@ -1,5 +1,5 @@
 import { prisma } from "../../../../lib/prisma"
-import { SlotStatus } from "../../../../prisma/generated/prisma/enums";
+import { BookingStatus, SlotStatus } from "../../../../prisma/generated/prisma/enums";
 import { AppError } from "../../../middlewares/appError";
 import { IBooking } from "./booking.interface";
 
@@ -142,9 +142,60 @@ const rejectBooking = async (bookingId: string) => {
     return result;
 }
 
+const completeBooking = async (email: string, bookingId: string) => {
+    const booking = await prisma.bookings.findUnique({
+        where: {
+            id: bookingId
+        }
+    })
+
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
+    })
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found");
+    }
+
+    const isTechnician = await prisma.technicianProfiles.findUnique({
+        where: {
+            userId: isUserExist.id
+        }
+    })
+
+    if (!isTechnician) {
+        throw new AppError(403, "You are not authorized to complete this booking");
+    }
+
+    if(booking?.technicianId !== isTechnician.id) {
+        throw new AppError(403, "You are not authorized to complete this booking");
+    }
+
+    if (!booking) {
+        throw new AppError(404, "Booking not found");
+    }
+
+    if (booking.status === "CANCELLED") {
+        throw new AppError(400, "Booking is cancelled");
+    }
+
+    const result = await prisma.bookings.update({
+        where: {
+            id: bookingId,
+            status: BookingStatus.PAID
+        },
+        data: {
+            status: "COMPLETED"
+        }
+    })
+    return result;
+}
 
 export const bookingService = {
     createBooking,
     acceptBooking,
-    rejectBooking
+    rejectBooking,
+    completeBooking
 }

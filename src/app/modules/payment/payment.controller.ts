@@ -14,6 +14,20 @@ const createPayment = catchAsync(async (req:Request, res: Response) => {
     })
 })
 
+const handleWebhook = catchAsync(async (req: Request, res: Response) => {
+    const signature = req.headers['stripe-signature'] as string;
+    const payload = req.body;
+
+    await paymentService.handleWebhook(payload, signature);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Webhook handled successfully!",
+        data: null
+    })
+})
+
 export const paymentController = {
-    createPayment
+    createPayment,
+    handleWebhook
 }
