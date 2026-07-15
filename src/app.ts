@@ -13,7 +13,18 @@ const app: Application = express();
 
 app.set('trust proxy', 1)
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "script-src": ["'self'", "'unsafe-inline'"],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "data:", "validator.swagger.io"],
+      },
+    },
+  })
+);
 app.use("/api/v1", globalLimiter)
 app.use("/api/v1/auth/login", authLimiter)
 app.use("/api/v1/auth/forget-password", authLimiter)
