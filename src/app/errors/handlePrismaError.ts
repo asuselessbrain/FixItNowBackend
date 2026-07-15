@@ -8,13 +8,44 @@ export const handlePrismaError = (err: Prisma.PrismaClientKnownRequestError): TG
 
     if (err.code === "P2002") {
         statusCode = 409;
-        const target = (err.meta?.target as string[]) || [];
+        let fields: string[] = [];
+
+        if (err.meta && err.meta.target) {
+            if (Array.isArray(err.meta.target)) {
+                fields = err.meta.target;
+            } else if (typeof err.meta.target === "string") {
+                const parts = err.meta.target.split("_");
+                if (parts.length > 2) {
+                    fields = [parts[parts.length - 2]];
+                } else {
+                    fields = [err.meta.target];
+                }
+            }
+        }
+
+        if (fields.length === 0 && err.meta?.driverAdapterError) {
+            const adapterFields = (err.meta.driverAdapterError as any)?.cause?.constraint?.fields;
+            if (Array.isArray(adapterFields)) {
+                fields = adapterFields.map(f => typeof f === "string" ? f.replace(/['"`\\]/g, "") : String(f));
+            }
+        }
+
+        if (fields.length === 0 && err.message) {
+            const match = err.message.match(/Unique constraint failed on the fields: \((.+?)\)/);
+            if (match) {
+                fields = match[1].split(",").map(f => f.trim().replace(/['"`\\]/g, ""));
+            }
+        }
+
         message = "Unique constraint violation";
-        errorSources = target.map((field) => ({
-            path: field,
-            message: `This ${field} is already in use`
-        }));
-        if (errorSources.length === 0) {
+
+        if (fields.length > 0) {
+            errorSources = fields.map((field) => ({
+                path: field,
+                message: `This ${field} is already in use`
+            }));
+            message = `${fields.map(f => f.charAt(0).toUpperCase() + f.slice(1)).join(", ")} is already registered. Please use a different value.`;
+        } else {
             errorSources = [{
                 path: "",
                 message: "A duplicate record was found"
