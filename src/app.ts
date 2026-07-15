@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import router from "./routes/router";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./app/docs/swaggerSpec";
 
 const app:Application = express();
 
@@ -14,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
