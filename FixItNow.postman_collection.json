@@ -1,0 +1,1428 @@
+{
+  "info": {
+    "_postman_id": "c5653b21-f58a-4a2e-93f6-80d6f44d95c5",
+    "name": "FixItNow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47974796",
+    "_collection_link": "https://go.postman.co/collection/47974796-c5653b21-f58a-4a2e-93f6-80d6f44d95c5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"arfan9@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Access Token Using Refresh Token",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"rahim.ali2@example.com\",\r\n    \"password\": \"123456\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/auth/refresh-token",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forget Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"arfan18@cse.pstu.ac.bd\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/forget-password",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "forget-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"token\": \"{{json_web_token_0o5m}}\",\r\n    \"newPassword\": \"123456789\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/reset-password",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"oldPassword\": \"123456789\",\r\n    \"newPassword\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/change-password",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Current Authenticated User",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"oldPassword\": \"123456789\",\r\n    \"newPassword\": \"123456\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/auth/me",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"arfan@gmail.com\",\r\n  \"name\": \"Rahim Ali\",\r\n  \"password\": \"123456\", \r\n  \"phone\": \"+8801712345678\",\r\n  \"avatar\": \"https://example.com/avatars/rahim.png\",\r\n  \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\r\n  \"role\": \"customer\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/user",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all users",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"arfan5@gmail.com\",\r\n  \"name\": \"Rahim Ali\",\r\n  \"password\": \"123456\", \r\n  \"phone\": \"+8801712345678\",\r\n  \"avatar\": \"https://example.com/avatars/rahim.png\",\r\n  \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\r\n  \"role\": \"customer\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/user",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "arfan",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "role",
+                  "value": "admin",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Bann or Unbann User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"active\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/user/7a9b560a-e51b-4a30-9295-cf402841fb85/status",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user",
+                "7a9b560a-e51b-4a30-9295-cf402841fb85",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Health & Beauty\",\r\n    \"description\": \"Explore skincare, cosmetics, personal care products, vitamins, and wellness essentials.\",\r\n    \"slug\": \"health-and-beauty\",\r\n    \"image_url\": \"https://api.yourdomain.com/uploads/categories/health.jpg\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/categories",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Categories",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Smartphones & Gadgets\",\r\n    \"description\": \"Explore the latest smartphones, smartwatches, and tech accessories.\",\r\n    \"slug\": \"smartphones-and-gadgets\",\r\n    \"image_url\": \"https://api.yourdomain.com/uploads/categories/smartphones.jpg\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/categories?limit=2&sortBy=createdAt&sortOrder=asc",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "spo",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "2"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get single Category",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Smartphones & Gadgets\",\r\n    \"description\": \"Explore the latest smartphones, smartwatches, and tech accessories.\",\r\n    \"slug\": \"smartphones-and-gadgets\",\r\n    \"image_url\": \"https://api.yourdomain.com/uploads/categories/smartphones.jpg\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/categories/8f8a3857-c6e2-40ab-87a1-2a4bf7cea0c4",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories",
+                "8f8a3857-c6e2-40ab-87a1-2a4bf7cea0c4"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Sports & Outdoor Fitness\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/categories/8f8a3857-c6e2-40ab-87a1-2a4bf7cea0c4",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories",
+                "8f8a3857-c6e2-40ab-87a1-2a4bf7cea0c4"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Category Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Sports & Outdoor Fitness\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/categories/8f8a3857-c6e2-40ab-87a1-2a4bf7cea0c4/toggle-status",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories",
+                "8f8a3857-c6e2-40ab-87a1-2a4bf7cea0c4",
+                "toggle-status"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Technician",
+      "item": [
+        {
+          "name": "Get All Technician",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"arfan5@gmail.com\",\r\n  \"name\": \"Rahim Ali\",\r\n  \"password\": \"123456\", \r\n  \"phone\": \"+8801712345678\",\r\n  \"avatar\": \"https://example.com/avatars/rahim.png\",\r\n  \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\r\n  \"role\": \"customer\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/technician?status=active",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "technician"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "average_rating",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "disabled": true
+                },
+                {
+                  "key": "searchTerm",
+                  "value": "shohag",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Technician",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/technician/b677ef6a-4d2a-4420-9403-c140a5ce88b5",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "technician",
+                "b677ef6a-4d2a-4420-9403-c140a5ce88b5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Technician Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Arfan Ahmed\",\r\n    \"technicianProfiles\": {\r\n        \"bio\": \"arfan ahmed\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/technician",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "technician"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Time Slot",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Ceiling Fan Repair & Maintenance\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/technician/generate-time-slots",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "technician",
+                "generate-time-slots"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Air Conditioner Installation & Servicing\",\r\n    \"description\": \"Expert AC installation, gas refilling, filter cleaning, cooling performance check, and regular maintenance services.\",\r\n    \"price\": 40.00,\r\n    \"image_url\": \"https://images.fixitnow.com/services/ac-service.jpg\",\r\n    \"location\": \"Dhaka\",\r\n    \"categoryId\": \"28649112-d98f-481c-9ba4-b419e13f13f0\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/services",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all Service",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/services",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "services"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "arfan",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Men's Fashion & Clothing",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "ratingGt",
+                  "value": "4",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Services",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Ceiling Fan Repair & Maintenance\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/services/1d9a58c4-918f-4e2a-8155-0afc42503fdf",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "services",
+                "1d9a58c4-918f-4e2a-8155-0afc42503fdf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My added Services",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Ceiling Fan Repair & Maintenance\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/services/my-added-services",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "services",
+                "my-added-services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Services",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Ceiling Fan Repair & Maintenance\"\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/services/1d9a58c4-918f-4e2a-8155-0afc42503fdf",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "services",
+                "1d9a58c4-918f-4e2a-8155-0afc42503fdf"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Technician Slot",
+      "item": [
+        {
+          "name": "Create Slot",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"date\": \"2026-07-15\",\r\n  \"selectedSlots\": [\r\n    \"9:00 AM to 10:00 AM\",\r\n    \"10:00 AM to 11:00 AM\",\r\n    \"4:00 PM to 5:00 PM\"\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/technician-time-slot",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "technician-time-slot"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Time Slot",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"date\": \"2026-07-15\",\r\n  \"selectedSlots\": [\r\n    \"10:00 AM to 11:00 AM\",\r\n    \"4:00 PM to 5:00 PM\"\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/technician-time-slot",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "technician-time-slot"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "Create booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"serviceId\": \"d20e476e-61af-4c72-971a-1980a056b95a\",\r\n  \"slotId\": \"968bfd5e-bec2-448a-8fc9-61a6fd8c87a7\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/booking",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Accept Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"serviceId\": \"1d9a58c4-918f-4e2a-8155-0afc42503fdf\",\r\n  \"slotId\": \"267a3e12-5766-4d8e-9605-670fd24bae04\",\r\n  \"totalAmount\": 1250.50\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/booking/a19f79fd-125c-4c50-b5b3-6dbf5e0b7876/accept",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "a19f79fd-125c-4c50-b5b3-6dbf5e0b7876",
+                "accept"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Booking as inprogress",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"serviceId\": \"1d9a58c4-918f-4e2a-8155-0afc42503fdf\",\r\n  \"slotId\": \"267a3e12-5766-4d8e-9605-670fd24bae04\",\r\n  \"totalAmount\": 1250.50\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/booking/a19f79fd-125c-4c50-b5b3-6dbf5e0b7876/in-progress",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "a19f79fd-125c-4c50-b5b3-6dbf5e0b7876",
+                "in-progress"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/booking/a19f79fd-125c-4c50-b5b3-6dbf5e0b7876/reject",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "a19f79fd-125c-4c50-b5b3-6dbf5e0b7876",
+                "reject"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/booking/a19f79fd-125c-4c50-b5b3-6dbf5e0b7876/complete",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "a19f79fd-125c-4c50-b5b3-6dbf5e0b7876",
+                "complete"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Booking Cancel By Technician",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{url}}/booking/f33b6647-a7f0-4433-b276-889e1bef5649/cancel-by-technician",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "f33b6647-a7f0-4433-b276-889e1bef5649",
+                "cancel-by-technician"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Booking Cancel By Technician Customer",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{url}}/booking/f33b6647-a7f0-4433-b276-889e1bef5649/cancel-by-customer",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "f33b6647-a7f0-4433-b276-889e1bef5649",
+                "cancel-by-customer"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer All Booking",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/booking/my-bookings",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "my-bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Booking",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/booking/f33b6647-a7f0-4433-b276-889e1bef5649",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "f33b6647-a7f0-4433-b276-889e1bef5649"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all technician booking",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{technicianToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/booking/technician-bookings",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                "technician-bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all booking for admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/booking/",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "booking",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"bookingId\": \"ca3056f1-d27c-45c5-8336-ef54a6832b53\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/payment/checkout-session",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "payment",
+                "checkout-session"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all Payment for user",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"bookingId\": \"f33b6647-a7f0-4433-b276-889e1bef5649\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/payment/history",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "payment",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single payment history",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"bookingId\": \"f33b6647-a7f0-4433-b276-889e1bef5649\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/payment/88c72487-9a72-462d-a89a-a3f56461e32d",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "payment",
+                "88c72487-9a72-462d-a89a-a3f56461e32d"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Review",
+      "item": [
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bookingId\": \"a19f79fd-125c-4c50-b5b3-6dbf5e0b7876\",\r\n    \"rating\": 5,\r\n    \"comment\": \"Nice job!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/reviews",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Check Server and not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-coral.vercel.app",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-coral",
+            "vercel",
+            "app"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "url",
+      "value": ""
+    },
+    {
+      "key": "json_web_token_0o5m",
+      "secret": true
+    },
+    {
+      "key": "token",
+      "secret": true
+    },
+    {
+      "key": "adminToken",
+      "secret": true
+    },
+    {
+      "key": "technicianToken",
+      "secret": true
+    }
+  ]
+}
