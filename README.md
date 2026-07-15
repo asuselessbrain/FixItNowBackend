@@ -7,7 +7,7 @@ FixItNow is a backend REST API for a home services marketplace. It enables custo
 
 ## 🚀 Live Demo & Repository
 - **Client Deployment:** https://assignment-4-arfan.vercel.app
-- **Server Base URL:** `http://localhost:8000/api/v1`
+- **Server Base URL:** https://fix-it-now-coral.vercel.app/
 
 ---
 
