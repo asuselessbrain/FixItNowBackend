@@ -6,10 +6,20 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import router from "./routes/router";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./app/docs/swaggerSpec";
+import helmet from "helmet";
+import { authLimiter, globalLimiter } from "../lib/rateLimit";
 
-const app:Application = express();
+const app: Application = express();
 
-app.use("/api/v1/payment/webhook", express.raw({type: 'application/json'}));
+app.set('trust proxy', 1)
+
+app.use(helmet());
+app.use("/api/v1", globalLimiter)
+app.use("/api/v1/auth/login", authLimiter)
+app.use("/api/v1/auth/forget-password", authLimiter)
+app.use("/api/v1/auth/reset-password", authLimiter)
+app.use("/api/v1/auth/change-password", authLimiter)
+app.use("/api/v1/payment/webhook", express.raw({ type: 'application/json' }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
