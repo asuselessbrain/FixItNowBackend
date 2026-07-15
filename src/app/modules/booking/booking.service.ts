@@ -100,12 +100,28 @@ const acceptBooking = async (bookingId: string) => {
         throw new AppError(404, "Booking not found");
     }
 
-    if (booking.status === "CONFIRMED") {
+    if (booking.status === BookingStatus.CONFIRMED) {
         throw new AppError(400, "Booking is already confirmed");
     }
 
-    if (booking.status === "CANCELLED") {
+    if (booking.status === BookingStatus.CANCELLED) {
         throw new AppError(400, "Booking is cancelled");
+    }
+
+    if (booking.status === BookingStatus.COMPLETED) {
+        throw new AppError(400, "Booking is already completed");
+    }
+
+    if (booking.status === BookingStatus.PAID) {
+        throw new AppError(400, "Booking is already paid");
+    }
+
+    if (booking.status === BookingStatus.REJECTED) {
+        throw new AppError(400, "Booking is rejected");
+    }
+
+    if (booking.status === BookingStatus.IN_PROGRESS) {
+        throw new AppError(400, "Booking is already in progress");
     }
 
     const result = await prisma.bookings.update({
@@ -113,7 +129,7 @@ const acceptBooking = async (bookingId: string) => {
             id: bookingId
         },
         data: {
-            status: "CONFIRMED"
+            status: BookingStatus.CONFIRMED
         }
     })
     return result;
