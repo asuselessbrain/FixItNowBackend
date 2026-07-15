@@ -2,10 +2,12 @@ import { Router } from "express";
 import { bookingController } from "./booking.controller";
 import auth from "../../../middlewares/auth";
 import { Role } from "../../../../prisma/generated/prisma/enums";
+import { validateRequest } from "../../../middlewares/validateRequest";
+import { bookingValidations } from "./booking.validation";
 
 const router = Router();
 
-router.post("/", auth(Role.customer), bookingController.createBooking)
+router.post("/", auth(Role.customer), validateRequest(bookingValidations.createBookingValidationSchema), bookingController.createBooking)
 router.get("/", auth(Role.admin), bookingController.getAllBookings)
 router.get("/my-bookings", auth(Role.customer), bookingController.getMyBookings)
 router.get("/technician-bookings", auth(Role.technician), bookingController.getTechnicianBookings)
