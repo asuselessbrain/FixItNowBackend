@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import { config } from "../config";
-import { prisma } from "./prisma";
-import { Role, Status } from "../prisma/generated/prisma/enums";
+import { prisma } from "../lib/prisma";
+import { Role, Status } from "./generated/prisma/enums";
 
-export const seedAdmin = async () => {
+async function main() {
     try {
         const hashedPassword = await bcrypt.hash(config.seedAdminData.password, Number(config.salt_rounds));
 
@@ -30,16 +30,16 @@ export const seedAdmin = async () => {
                     avatar: "https://api.yourdomain.com/uploads/avatars/admin-profile.png",
                     address: "Dhaka, Bangladesh",
                 },
-            })
-
-            if (process.env.NODE_ENV === "development") {
-                console.log("Admin user seeded successfully.");
-            }
+            });
+            console.log("Admin user seeded successfully.");
+        } else {
+            console.log("Admin user already exists. Skipping seeding.");
         }
-    }
-    catch (error) {
-        if (process.env.NODE_ENV === "development") {
-            console.error("Error seeding admin user:", error);
-        }
+    } catch (error) {
+        console.error("Error seeding admin user:", error);
+    } finally {
+        await prisma.$disconnect();
     }
 }
+
+main();
