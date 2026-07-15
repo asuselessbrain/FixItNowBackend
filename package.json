@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx --watch src/server.ts",
     "stripe": "stripe listen --forward-to localhost:8000/api/v1/payment/webhook",
-    "build": "prisma generate && tsup src/server.ts --format esm --platform node --target node20 --outDir api --external pg-native",
+    "build": "prisma generate && tsup src/server.ts --format esm --platform node --target node20 --outDir api --external pg-native --external swagger-ui-dist",
     "postinstall": "prisma generate",
     "start": "node api/server.js"
   },
