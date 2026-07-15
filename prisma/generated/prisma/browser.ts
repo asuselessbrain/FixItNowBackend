@@ -33,6 +33,11 @@ export type Categories = Prisma.CategoriesModel
  */
 export type Payments = Prisma.PaymentsModel
 /**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
  * Model Service
  * 
  */

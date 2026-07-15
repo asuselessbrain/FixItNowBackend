@@ -5,7 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch src/server.ts"
+    "dev": "tsx --watch src/server.ts",
+    "stripe": "stripe listen --forward-to localhost:8000/api/v1/payment/webhook"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

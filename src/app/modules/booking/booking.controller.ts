@@ -73,11 +73,73 @@ const cancelBookingByCustomer = catchAsync(async (req: Request, res: Response) =
     })
 })
 
+const getMyBookings = catchAsync(async (req: Request, res: Response) => {
+    const userEmail = req.user?.email;
+    const result = await bookingService.getMyBookings(userEmail as string, req.query);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Bookings retrieved successfully!",
+        data: result
+    })
+})
+
+const getTechnicianBookings = catchAsync(async (req: Request, res: Response) => {
+    const userEmail = req.user?.email;
+    const result = await bookingService.getTechnicianBookings(userEmail as string, req.query);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Technician bookings retrieved successfully!",
+        data: result
+    })
+})
+
+const getAllBookings = catchAsync(async (req: Request, res: Response) => {
+    const result = await bookingService.getAllBookings(req.query);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Bookings retrieved successfully!",
+        data: result
+    })
+})
+
+const inProgressBooking = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const userEmail = req.user?.email;
+    const result = await bookingService.inProgressBooking(userEmail as string, bookingId as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking marked as in-progress successfully!",
+        data: result
+    })
+})
+
+const getSingleBooking = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
+    const userEmail = req.user?.email;
+    const userRole = req.user?.role;
+    const result = await bookingService.getSingleBooking(bookingId as string, userEmail as string, userRole as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Booking retrieved successfully!",
+        data: result
+    })
+})
+
 export const bookingController = {
     createBooking,
     acceptBooking,
     rejectBooking,
     completeBooking,
     cancelBookingByTechnician,
-    cancelBookingByCustomer
+    cancelBookingByCustomer,
+    getMyBookings,
+    getTechnicianBookings,
+    getAllBookings,
+    inProgressBooking,
+    getSingleBooking
 }

@@ -69,11 +69,23 @@ const currentAuthenticatedUser = catchAsync(async (req: Request, res: Response) 
     });
 });
 
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+    const email = req.user?.email;
+    const result = await authService.updateProfile(email as string, req.body);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Profile updated successfully!",
+        data: result
+    });
+});
+
 export const authController = {
     login,
     generateAccessTokenUsingRefreshToken,
     forgetPassword,
     resetPassword,
     changePassword,
-    currentAuthenticatedUser
+    currentAuthenticatedUser,
+    updateProfile
 }

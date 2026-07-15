@@ -17,4 +17,5 @@ model Service {
     @@index([categoryId], name: "category_id_index")
     @@index([technicianId], name: "technician_id_index")
     bookings Bookings[]
+    reviews  Review[]
 }

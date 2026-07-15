@@ -14,6 +14,7 @@ export const BookingStatus = {
   REJECTED: 'REJECTED',
   CONFIRMED: 'CONFIRMED',
   PAID: 'PAID',
+  IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
 } as const

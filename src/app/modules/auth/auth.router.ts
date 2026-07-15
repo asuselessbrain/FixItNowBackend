@@ -10,6 +10,7 @@ router.get('/refresh-token', authController.generateAccessTokenUsingRefreshToken
 router.post('/forget-password', authController.forgetPassword);
 router.post('/reset-password', authController.resetPassword);
 router.post('/change-password', auth(Role.admin, Role.customer, Role.technician), authController.changePassword);
+router.patch('/update-profile', auth(Role.admin, Role.customer, Role.technician), authController.updateProfile);
 router.get('/me', auth(Role.admin, Role.customer, Role.technician), authController.currentAuthenticatedUser);
 
 export const authRouter = router;

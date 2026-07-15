@@ -18,6 +18,7 @@ model User {
     @@map("users")
     @@index([email], name: "email_index")
     bookings Bookings[]
+    reviews  Review[]
 }
 
 enum Role {

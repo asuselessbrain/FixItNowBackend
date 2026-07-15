@@ -122,6 +122,17 @@ const getAllServices = async (payload: Record<string, any>) => {
                         }
                     }
                 }
+            },
+            reviews: {
+                include: {
+                    customer: {
+                        select: {
+                            id: true,
+                            name: true,
+                            avatar: true
+                        }
+                    }
+                }
             }
         },
         take,
@@ -162,6 +173,17 @@ const getSingleService = async (id: string) => {
                             createdAt: true,
                             updatedAt: true,
                             passwordChangeAt: true,
+                        }
+                    }
+                }
+            },
+            reviews: {
+                include: {
+                    customer: {
+                        select: {
+                            id: true,
+                            name: true,
+                            avatar: true
                         }
                     }
                 }

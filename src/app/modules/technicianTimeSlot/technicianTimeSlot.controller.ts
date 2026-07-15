@@ -16,6 +16,20 @@ const createTechnicianTimeSlots = catchAsync(async (req: Request, res: Response)
     })
 })
 
+const updateTechnicianTimeSlots = catchAsync(async (req: Request, res: Response) => {
+    const email = req.user?.email;
+    const { date, selectedSlots } = req.body;
+
+    const result = await technicianTimeSlotService.updateTechnicianTimeSlots(email as string, date, selectedSlots);
+
+    sendResponse(res, {
+        statusCode: 200,
+        message: "Technician time slots updated successfully!",
+        data: result
+    });
+});
+
 export const technicianTimeSlotController = {
-    createTechnicianTimeSlots
+    createTechnicianTimeSlots,
+    updateTechnicianTimeSlots
 }

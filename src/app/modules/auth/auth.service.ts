@@ -228,6 +228,50 @@ const currentAuthenticatedUser = async (email: string) => {
     return isUserExist;
 }
 
+const updateProfile = async (
+    email: string,
+    payload: { name?: string; phone?: string; avatar?: string; address?: string }
+) => {
+    const isUserExist = await prisma.user.findUnique({
+        where: {
+            email: email,
+            status: Status.active
+        }
+    });
+
+    if (!isUserExist) {
+        throw new AppError(404, "User not found!");
+    }
+
+    // Filter payload to only update allowed fields
+    const updatedData: Record<string, any> = {};
+    if (payload.name !== undefined) updatedData.name = payload.name;
+    if (payload.phone !== undefined) updatedData.phone = payload.phone;
+    if (payload.avatar !== undefined) updatedData.avatar = payload.avatar;
+    if (payload.address !== undefined) updatedData.address = payload.address;
+
+    const result = await prisma.user.update({
+        where: {
+            email: email
+        },
+        data: updatedData,
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            phone: true,
+            role: true,
+            status: true,
+            avatar: true,
+            address: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
+
+    return result;
+};
+
 export const authService = {
     loginUser,
     generateAccessTokenUsingRefreshToken,
@@ -235,4 +279,5 @@ export const authService = {
     resetPassword,
     changePassword,
     currentAuthenticatedUser,
+    updateProfile
 }

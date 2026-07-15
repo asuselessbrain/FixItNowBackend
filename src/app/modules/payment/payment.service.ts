@@ -2,6 +2,11 @@ import Stripe from "stripe";
 import { config } from "../../../../config";
 import { prisma } from "../../../../lib/prisma"
 import stripe from "../../../../lib/stripe";
+import { PaymentsWhereInput } from "../../../../prisma/generated/prisma/models";
+import { filterHelper } from "../../../helpers/filterHelper";
+import { paginationHelper } from "../../../helpers/paginationHelper";
+import { searchingHelper } from "../../../helpers/searchingHelper";
+import { sortingHelper } from "../../../helpers/sortingHelper";
 import { AppError } from "../../../middlewares/appError";
 import { BookingStatus, PaymentStatus } from "../../../../prisma/generated/prisma/enums";
 
@@ -130,14 +135,20 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
                     }
                 })
 
-                await tx.bookings.update({
-                    where: {
-                        id: bookingId
-                    },
-                    data: {
-                        status: BookingStatus.PAID
-                    }
-                })
+                const booking = await tx.bookings.findUnique({
+                    where: { id: bookingId }
+                });
+
+                if (booking && booking.status !== "CANCELLED" && booking.status !== "REJECTED") {
+                    await tx.bookings.update({
+                        where: {
+                            id: bookingId
+                        },
+                        data: {
+                            status: BookingStatus.PAID
+                        }
+                    })
+                }
             })
             console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
             // Then define and call a method to handle the successful payment intent.
@@ -197,10 +208,146 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
             // Unexpected event type
             console.log(`Unhandled event type ${event.type}.`);
     }
+}
 
+const getMyPaymentHistory = async (email: string, query: Record<string, any>) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email,
+            status: "active"
+        }
+    });
+
+    if (!user) {
+        throw new AppError(404, "User not found");
+    }
+
+    const { page, limit, searchTerm, sortBy, sortOrder, ...filters } = query;
+
+    const whereConditions: PaymentsWhereInput[] = [
+        {
+            booking: {
+                customerId: user.id
+            }
+        }
+    ];
+
+    const allowedSearchFields = ["transactionId", "booking.service.name", "booking.technician.user.name"];
+    const allowedFilterFields = ["status"];
+    const allowedSortFields = ["paymentDate", "amount", "createdAt", "updatedAt", "status"];
+
+    searchingHelper(whereConditions, allowedSearchFields, searchTerm);
+    filterHelper(whereConditions, filters, allowedFilterFields);
+
+    const { take, skip } = paginationHelper(page, limit);
+    const sortCondition = sortingHelper(allowedSortFields, sortBy, sortOrder);
+
+    const result = await prisma.payments.findMany({
+        where: {
+            AND: whereConditions
+        },
+        include: {
+            booking: {
+                include: {
+                    service: true,
+                    technician: {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    email: true,
+                                    phone: true,
+                                    avatar: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        take,
+        skip,
+        orderBy: sortCondition
+    });
+
+    const total = await prisma.payments.count({
+        where: {
+            AND: whereConditions
+        }
+    });
+
+    const totalPages = Math.ceil(total / take);
+
+    const meta = {
+        total,
+        totalPages,
+        currentPage: query.page ? parseInt(query.page) : 1,
+        limit: take
+    };
+
+    return { meta, result };
+}
+
+const getSinglePayment = async (paymentId: string, email: string, role: string) => {
+    const payment = await prisma.payments.findUnique({
+        where: {
+            id: paymentId
+        },
+        include: {
+            booking: {
+                include: {
+                    service: true,
+                    customer: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            phone: true,
+                            avatar: true
+                        }
+                    },
+                    technician: {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    email: true,
+                                    phone: true,
+                                    avatar: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!payment) {
+        throw new AppError(404, "Payment not found");
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { email }
+    });
+
+    if (!user) {
+        throw new AppError(404, "User not found");
+    }
+
+    // Role-based authorization
+    if (role === "customer" && payment.booking.customerId !== user.id) {
+        throw new AppError(403, "You are not authorized to view this payment details");
+    }
+
+    return payment;
 }
 
 export const paymentService = {
     createPayment,
-    handleWebhook
+    handleWebhook,
+    getMyPaymentHistory,
+    getSinglePayment
 }

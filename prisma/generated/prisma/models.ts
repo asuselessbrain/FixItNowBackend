@@ -11,6 +11,7 @@
 export type * from './models/Bookings'
 export type * from './models/Categories'
 export type * from './models/Payments'
+export type * from './models/Review'
 export type * from './models/Service'
 export type * from './models/TechnicianProfiles'
 export type * from './models/TechnicianSlots'

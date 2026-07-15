@@ -1,36 +1,17 @@
-enum BookingStatus {
-  REQUESTED
-  REJECTED
-  CONFIRMED
-  PAID
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
-}
-
-model Bookings {
+model Review {
   id           String             @id @default(uuid())
   customerId   String
   customer     User               @relation(fields: [customerId], references: [id])
-  
   serviceId    String
   service      Service            @relation(fields: [serviceId], references: [id])
-  
   technicianId String
   technician   TechnicianProfiles @relation(fields: [technicianId], references: [id])
-
-  slotId       String             @unique
-  slot         TechnicianSlots    @relation(fields: [slotId], references: [id], onDelete: Restrict)
-
-  totalAmount  Float
-  status       BookingStatus      @default(REQUESTED)
-  
+  bookingId    String             @unique
+  booking      Bookings           @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  rating       Int
+  comment      String?            @db.Text
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
 
-  @@index([customerId])
-  @@index([technicianId])
-  @@map("bookings")
-  payments Payments[]
-  review   Review?
+  @@map("reviews")
 }
